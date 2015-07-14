@@ -59,3 +59,5 @@ particularly well documented.
 # *** DONE Sort simple-mpc-query
 # *** TODO Faces
 # *** TODO Make more vars customizable
+** Testing
+https://travis-ci.org/jorenvo/simple-mpc
