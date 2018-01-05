@@ -48,6 +48,13 @@ with `simple-mpc-seek-forward' and `simple-mpc-seek-backward'."
   :group 'simple-mpc
   :type 'integer)
 
+(defcustom simple-mpc-seek-percentage 5
+  "The percentage that will be used to do relative seeking with
+`simple-mpc-seek-percentage-forward' and
+`simple-mpc-seek-percentage-backward'."
+  :group 'simple-mpc
+  :type 'integer)
+
 (defcustom simple-mpc-playlist-auto-refresh nil
   "Automatic refresh of the playlist buffer.
 

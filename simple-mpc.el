@@ -41,11 +41,11 @@
   "Quits simple-mpc."
   (interactive)
   (mapc (lambda (buf)
-	  (if (buffer-live-p (get-buffer buf))
-	      (kill-buffer buf)))
-	(list simple-mpc-main-buffer-name
-	      simple-mpc-current-playlist-buffer-name
-	      simple-mpc-query-buffer-name)))
+          (if (buffer-live-p (get-buffer buf))
+              (kill-buffer buf)))
+        (list simple-mpc-main-buffer-name
+              simple-mpc-current-playlist-buffer-name
+              simple-mpc-query-buffer-name)))
 
 (defun simple-mpc-toggle ()
   (interactive)
@@ -69,11 +69,31 @@
   (interactive)
   (simple-mpc-seek-internal (- simple-mpc-seek-time-in-s)))
 
+(defun simple-mpc-seek-percentage-forward ()
+  "Does a relative seek forward by `simple-mpc-seek-percentage'."
+  (interactive)
+  (simple-mpc-seek-percentage-internal
+   simple-mpc-seek-percentage))
+
+(defun simple-mpc-seek-percentage-backward ()
+  "Does a relative seek backward by -`simple-mpc-seek-percentage'."
+  (interactive)
+  (simple-mpc-seek-percentage-internal
+   (- simple-mpc-seek-percentage)))
+
 (defun simple-mpc-seek-internal (time-in-seconds)
   (let ((time-string (number-to-string time-in-seconds)))
     (if (> time-in-seconds 0)
-	(setq time-string (concat "+" time-string)))
+        (setq time-string (concat "+" time-string)))
     (simple-mpc-call-mpc nil (list "seek" time-string))))
+
+(defun simple-mpc-seek-percentage-internal (percentage)
+  (let ((percentage-string (number-to-string percentage)))
+    (if (> percentage 0)
+        (setq percentage-string (concat "+" percentage-string)))
+    (simple-mpc-call-mpc nil (list
+                              "seek"
+                              (concat percentage-string "%")))))
 
 (defun simple-mpc-clear-current-playlist ()
   (interactive)
@@ -106,21 +126,23 @@ through the lsplaylists command."
       (read-only-mode -1)
       (erase-buffer)
       (insert (propertize "* simple-mpc *\n\n"
-			  'face 'simple-mpc-main-name)
-	      (propertize "   * controls\n" 'face 'simple-mpc-main-headers)
-	      "      * [t]oggle\n"
-	      "      * [n]ext track\n"
-	      "      * [p]revious track\n"
-	      "      * seek [f]orward\n"
-	      "      * seek [b]ackward\n"
-	      (propertize "\n   * playlist\n" 'face 'simple-mpc-main-headers)
-	      "      * view [c]urrent playlist\n"
-	      "      * [C]lear current playlist\n"
-	      "      * [S]huffle playlist\n"
-	      "      * [l]oad playlist\n"
-	      "      * [s]earch database\n"
-	      (propertize "\n   * misc\n" 'face 'simple-mpc-main-headers)
-	      "      * [q]uit")
+                          'face 'simple-mpc-main-name)
+              (propertize "   * controls\n" 'face 'simple-mpc-main-headers)
+              "      * [t]oggle\n"
+              "      * [n]ext track\n"
+              "      * [p]revious track\n"
+              "      * seek [f]orward\n"
+              "      * seek [F]orward by percentage\n"
+              "      * seek [b]ackward\n"
+              "      * seek [B]ackward by percentage\n"
+              (propertize "\n   * playlist\n" 'face 'simple-mpc-main-headers)
+              "      * view [c]urrent playlist\n"
+              "      * [C]lear current playlist\n"
+              "      * [S]huffle playlist\n"
+              "      * [l]oad playlist\n"
+              "      * [s]earch database\n"
+              (propertize "\n   * misc\n" 'face 'simple-mpc-main-headers)
+              "      * [q]uit")
       (simple-mpc-mode) ; start major mode
       (switch-to-buffer buf))))
 

@@ -33,7 +33,9 @@
     (define-key map "n" 'simple-mpc-next)
     (define-key map "p" 'simple-mpc-prev)
     (define-key map "f" 'simple-mpc-seek-forward)
+    (define-key map "F" 'simple-mpc-seek-percentage-forward)
     (define-key map "b" 'simple-mpc-seek-backward)
+    (define-key map "B" 'simple-mpc-seek-percentage-backward)
     (define-key map "c" 'simple-mpc-view-current-playlist)  ;; autoload this
     (define-key map "C" 'simple-mpc-clear-current-playlist)
     (define-key map "S" 'simple-mpc-shuffle-current-playlist)
@@ -50,4 +52,5 @@
   (set (make-local-variable 'revert-buffer-function) #'simple-mpc))
 
 (provide 'simple-mpc-mode)
+
 ;;; simple-mpc-mode.el ends here
